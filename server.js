@@ -1,4 +1,4 @@
-/*
+/* Task 2
 var express = require('express');  //used for routing
 var app = express();
 var http = require('http').Server(app); //used to provide http functionality
@@ -16,6 +16,9 @@ app.get('/test', function(req, res){
 });
 */
 
+
+
+/* Task 4 - No modularization of code
 var express = require('express');  //used for routing
 var app = express();
 
@@ -62,5 +65,35 @@ app.post('/api/login',function(req,res){
     res.send(customer);
 
 });
+*/
 
 
+
+/* Task 4 - No modularization of code (routes) */
+
+var express = require('express');  //used for routing
+var app = express();
+
+var bodyParser = require('body-parser'); //create an instance of a body-parser
+
+app.use(bodyParser.json());
+
+// Move the app.use(express.static(...)) below your app.get('/') route, or else index.html will load, which was the first part of the workshop
+//app.use(express.static(__dirname + '/www')); 
+
+app.listen(3000,()=>{
+    var d = new Date();
+    var n = d.getHours();
+    var m = d.getMinutes();
+    console.log('Server has been started at : ' + n + ':' + m);
+});
+
+//import routes
+var indexRoutes = require('./routes/index');
+var loginRoutes = require('./routes/login');
+
+//use routes
+app.use('/',indexRoutes); //For GET /
+app.use('/api',loginRoutes); //For POST /api/login
+
+app.use(express.static(__dirname + '/www'));
